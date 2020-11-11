@@ -8,10 +8,10 @@ public class SnakeInput {
     public Activity activity;
 
     // Default begin snake direction is go to the right
-    public static boolean isUp = false;
-    public static boolean isRight = true;
-    public static boolean isDown = false;
-    public static boolean isLeft = false;
+    public boolean isUp = false;
+    public boolean isRight = true;
+    public boolean isDown = false;
+    public boolean isLeft = false;
 
     // Thread stuff and Gameloops stuff (:
     public static boolean isRunning;
@@ -35,8 +35,8 @@ public class SnakeInput {
         this.activity.findViewById(R.id.right_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isUp = true;
-                isRight = false;
+                isUp = false;
+                isRight = true;
                 isDown = false;
                 isLeft = false;
             }

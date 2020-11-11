@@ -7,28 +7,28 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class SnakeActivity extends AppCompatActivity {
 
-    private SnakeScreen mSnakeScreen;
-    private SnakeInput mSnakeInput;
+    private static SnakeScreen mSnakeScreen;
+    private static SnakeInput mSnakeInput;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_snake);
 
-        mSnakeScreen = new SnakeScreen(this);
+        mSnakeScreen = (SnakeScreen) findViewById(R.id.snake_screen);
 
         mSnakeInput = new SnakeInput(this);
         mSnakeInput.buttonFunc();
     }
 
-    public void whichDirection() {
-        if (SnakeInput.isUp) {
+    public static void whichDirection() {
+        if (mSnakeInput.isUp) {
             mSnakeScreen.y -= 50;
-        } else if (SnakeInput.isLeft) {
+        } else if (mSnakeInput.isLeft) {
             mSnakeScreen.x -= 50;
-        } else if (SnakeInput.isRight) {
+        } else if (mSnakeInput.isRight) {
             mSnakeScreen.x += 50;
-        } else if (SnakeInput.isDown) {
+        } else if (mSnakeInput.isDown) {
             mSnakeScreen.y += 50;
         }
         mSnakeScreen.moveSnake();

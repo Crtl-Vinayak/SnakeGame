@@ -13,6 +13,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
+
 public class SnakeScreen extends View {
 
     public int x = 0;
@@ -22,6 +24,9 @@ public class SnakeScreen extends View {
     private Paint bgPaint;
     private Rect rect;
     private Paint paint;
+
+//    private ArrayList<Rect> snake = new ArrayList<>();
+//    private int bodyLength = 1;
 
     public SnakeScreen(Context context) {
         super(context);
