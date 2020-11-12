@@ -25,7 +25,7 @@ class Gameloop implements Runnable {
 
     private void tick() {
         if (tickNumber % 15 == 0) {
-            snakeActivity.whichDirection();
+//            snakeActivity.whichDirection();
         }
     }
 }

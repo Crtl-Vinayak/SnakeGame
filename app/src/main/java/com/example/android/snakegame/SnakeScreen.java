@@ -13,21 +13,36 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+import java.util.ArrayList;
+
 public class SnakeScreen extends View {
 
-    public int x = 80;
-    public int y = 50;
-
-    private Rect bgRect;
-    private Paint bgPaint;
-    private Rect rect;
-    private Paint paint;
-
-    private Rect tRect;
-    private Paint tPaint;
+//    public int x = 80;
+//    public int y = 50;
+//
+//    private Rect bgRect;
+//    private Paint bgPaint;
+//    private Rect rect;
+//    private Paint paint;
+//
+//    private Rect tRect;
+//    private Paint tPaint;
 
 //    private ArrayList<Rect> snake = new ArrayList<>();
 //    private int bodyLength = 1;
+
+    private ArrayList<Rect> border = new ArrayList<>();
+    private ArrayList<Rect> snakeBody = new ArrayList<>();
+    private Rect food = new Rect();
+
+    private Paint borderPaint1, borderPaint2;
+    private Paint snakePaint;
+
+    private int rectSides = 50;
+    private int offsetX;
+    private int offsetY;
+    private int blockScreenWidth;
+    private int blockScreenHeight;
 
     public SnakeScreen(Context context) {
         super(context);
@@ -54,52 +69,116 @@ public class SnakeScreen extends View {
         init(attrs);
     }
 
-    /**
-     * TODO
-     * make a square by square next to each other a border.
-     * with a different color and the square sides is the same as the snake head sides. #50x50px.
-     */
 
     private void init(@Nullable AttributeSet set) {
-        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
-        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50);
+        offsetX = getScreenWidth() % rectSides;
+        offsetY = getScreenHeight() / 2 % rectSides;
 
-        System.out.println("system size: " + getScreenWidth() + " x " + getScreenHeight());
-        System.out.println("snake size: " + snakeScreenWidth + " x " + snakeScreenHeight);
+        borderPaint1 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderPaint1.setColor(Color.RED);
+        borderPaint2 = new Paint(Paint.ANTI_ALIAS_FLAG);
+        borderPaint2.setColor(Color.BLUE);
 
-        bgRect = new Rect();
-        bgRect.set(getScreenWidth() % 50, (getScreenHeight() / 2) % 50, snakeScreenWidth, snakeScreenHeight);
+        blockScreenWidth = ((getScreenWidth() - (getScreenWidth() % rectSides)) / rectSides) + 1;
+        blockScreenHeight = ((getScreenHeight() / 2 - (getScreenHeight() / 2 % rectSides)) / rectSides) + 1;
 
-        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        bgPaint.setColor(Color.CYAN);
+        for (int i = 0; i < blockScreenWidth + blockScreenHeight; i++) {
+            border.add(new Rect());
+            if (i < 22) {
+                border.get(i).set(
+                        -offsetX + (i * rectSides),
+                        -offsetY,
+                        -offsetX + (i * rectSides) + rectSides,
+                        -offsetY + rectSides
+                );
+            }
+            if (i == 22) {
+                border.get(i).set(
+                        -offsetX + (blockScreenWidth * rectSides),
+                        -offsetY + (i * rectSides),
+                        -offsetX + (blockScreenWidth * rectSides) + rectSides,
+                        -offsetY + (i * rectSides) + rectSides
+                );
+            }
+        }
 
-        x = getScreenWidth() % 50;
-        y = (getScreenHeight() / 2) % 50;
-        rect = new Rect();
-        rect.set(x, y, x + 50, y + 50);
+        // border for bottom
+//        for (int i = 0; i < ((getScreenWidth() - (getScreenWidth() % rectSides)) / rectSides) + 2; i++) {
+//            border.add(new Rect());
+//            border.get(i).set(
+//                    -offsetX + (i * rectSides),
+//                    -offsetY + (rectSides * ((getScreenHeight() / 2) - ((getScreenHeight() / 2) % rectSides)) / rectSides),
+//                    -offsetX + (i * rectSides) + rectSides,
+//                    -offsetY + -offsetY + (rectSides * ((getScreenHeight() / 2) - ((getScreenHeight() / 2) % rectSides)) / rectSides) + rectSides
+//            );
+//        }
 
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.YELLOW);
-
-        tRect = new Rect();
-        tRect.set(50, 300, 50 + 50, 300 + 50);
-
-        tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        tPaint.setColor(Color.RED);
+//        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
+//        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50);
+//
+//        System.out.println("system size: " + getScreenWidth() + " x " + getScreenHeight());
+//        System.out.println("snake size: " + snakeScreenWidth + " x " + snakeScreenHeight);
+//
+//        bgRect = new Rect();
+//        bgRect.set(getScreenWidth() % 50, (getScreenHeight() / 2) % 50, snakeScreenWidth, snakeScreenHeight);
+//
+//        bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        bgPaint.setColor(Color.CYAN);
+//
+//        x = getScreenWidth() % 50;
+//        y = (getScreenHeight() / 2) % 50;
+//        rect = new Rect();
+//        rect.set(x, y, x + 50, y + 50);
+//
+//        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        paint.setColor(Color.YELLOW);
+//
+//        tRect = new Rect();
+//        tRect.set(50, 300, 50 + 50, 300 + 50);
+//
+//        tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        tPaint.setColor(Color.RED);
     }
 
     public void moveSnake() {
-        rect.set(x, y, x + 50, y + 50);
+//        rect.set(x, y, x + 50, y + 50);
         postInvalidate();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawRect(bgRect, bgPaint);
-        canvas.drawRect(rect, paint);
-        canvas.drawRect(tRect, tPaint);
-        System.out.println("canvas size: " + canvas.getWidth() + " x " + canvas.getHeight());
+
+        for (int i = 0; i < blockScreenWidth + blockScreenHeight; i++) {
+            if (i % 2 == 0) {
+                canvas.drawRect(border.get(i), borderPaint1);
+            } else {
+                canvas.drawRect(border.get(i), borderPaint2);
+            }
+        }
+
+        Rect playR = new Rect();
+        playR.set(
+                -offsetX + 50,
+                -offsetY + 50,
+                offsetX - 50 + (getScreenWidth() - (getScreenWidth() % rectSides)),
+                offsetY - 50 + (getScreenHeight() / 2 - (getScreenHeight() / 2 % rectSides)));
+        Paint test = new Paint(Paint.ANTI_ALIAS_FLAG);
+        test.setColor(Color.GRAY);
+        canvas.drawRect(playR, test);
+
+//        for (int i = 0; i < ((getScreenWidth() - (getScreenWidth() % rectSides)) / rectSides) + 2; i++) {
+//            if (i % 2 == 0) {
+//                canvas.drawRect(border.get(i), borderPaint2);
+//            } else {
+//                canvas.drawRect(border.get(i), borderPaint1);
+//            }
+//        }
+
+//        canvas.drawRect(bgRect, bgPaint);
+//        canvas.drawRect(rect, paint);
+//        canvas.drawRect(tRect, tPaint);
+//        System.out.println("canvas size: " + canvas.getWidth() + " x " + canvas.getHeight());
     }
 
     public static int getScreenWidth() {

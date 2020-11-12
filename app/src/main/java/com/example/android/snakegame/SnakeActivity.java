@@ -36,15 +36,15 @@ public class SnakeActivity extends AppCompatActivity {
     }
 
     public void whichDirection() {
-        if (mSnakeInput.isUp) {
-            mSnakeScreen.y -= 50;
-        } else if (mSnakeInput.isLeft) {
-            mSnakeScreen.x -= 50;
-        } else if (mSnakeInput.isRight) {
-            mSnakeScreen.x += 50;
-        } else if (mSnakeInput.isDown) {
-            mSnakeScreen.y += 50;
-        }
-        mSnakeScreen.moveSnake();
+//        if (mSnakeInput.isUp) {
+//            mSnakeScreen.y -= 50;
+//        } else if (mSnakeInput.isLeft) {
+//            mSnakeScreen.x -= 50;
+//        } else if (mSnakeInput.isRight) {
+//            mSnakeScreen.x += 50;
+//        } else if (mSnakeInput.isDown) {
+//            mSnakeScreen.y += 50;
+//        }
+//        mSnakeScreen.moveSnake();
     }
 }
