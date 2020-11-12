@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SnakeGame</string>
+    <string name="UP">UP</string>
+    <string name="RIGHT">RIGHT</string>
+    <string name="DOWN">DOWN</string>
+    <string name="LEFT">LEFT</string>
+    <string name="PLAY">PLAY</string>
+    <string name="EXIT">EXIT</string>
 </resources>

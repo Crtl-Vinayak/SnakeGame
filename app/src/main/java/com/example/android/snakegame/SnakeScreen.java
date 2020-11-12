@@ -1,5 +1,6 @@
 package com.example.android.snakegame;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -9,13 +10,15 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import java.util.ArrayList;
-
 public class SnakeScreen extends View {
+
+    public int screenWidth;
+    public int screenHeight;
 
     public int x = 0;
     public int y = 0;
@@ -24,6 +27,8 @@ public class SnakeScreen extends View {
     private Paint bgPaint;
     private Rect rect;
     private Paint paint;
+
+    private RelativeLayout mSnakeScreenBg;
 
 //    private ArrayList<Rect> snake = new ArrayList<>();
 //    private int bodyLength = 1;
@@ -54,8 +59,14 @@ public class SnakeScreen extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
+        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
+        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50);
+
+        System.out.println("system size: " + getScreenWidth() + " x " + getScreenHeight());
+        System.out.println("snake size: " + snakeScreenWidth + " x " + snakeScreenHeight);
+
         bgRect = new Rect();
-        bgRect.set(0, 0, getScreenWidth(), getScreenHeight());
+        bgRect.set(0, 0, snakeScreenWidth, snakeScreenHeight);
 
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setColor(Color.CYAN);

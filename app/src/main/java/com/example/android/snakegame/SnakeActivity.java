@@ -1,12 +1,14 @@
 package com.example.android.snakegame;
 
 import android.os.Bundle;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SnakeActivity extends AppCompatActivity {
 
+    private static RelativeLayout mSnakeScreenBg;
     private static SnakeScreen mSnakeScreen;
     private static SnakeInput mSnakeInput;
 
@@ -16,12 +18,11 @@ public class SnakeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_snake);
 
         mSnakeScreen = (SnakeScreen) findViewById(R.id.snake_screen);
-
         mSnakeInput = new SnakeInput(this);
         mSnakeInput.buttonFunc();
     }
 
-    public static void whichDirection() {
+    public void whichDirection() {
         if (mSnakeInput.isUp) {
             mSnakeScreen.y -= 50;
         } else if (mSnakeInput.isLeft) {

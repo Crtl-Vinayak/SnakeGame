@@ -5,11 +5,20 @@
     android:layout_height="match_parent"
     android:weightSum="2">
 
-    <com.example.android.snakegame.SnakeScreen
-        android:id="@+id/snake_screen"
+    <RelativeLayout
+        android:id="@+id/snake_screen_bg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/snakeLayoutBackgroundView">
+
+        <com.example.android.snakegame.SnakeScreen
+            android:id="@+id/snake_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/snake_input"
@@ -21,7 +30,7 @@
             android:id="@+id/up_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UP"
+            android:text="@string/UP"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"/>
 
@@ -29,15 +38,16 @@
             android:id="@+id/right_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RIGHT"
+            android:text="@string/RIGHT"
             android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_alignParentEnd="true" />
 
         <Button
             android:id="@+id/down_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="DOWN"
+            android:text="@string/DOWN"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"/>
 
@@ -45,25 +55,28 @@
             android:id="@+id/left_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LEFT"
+            android:text="@string/LEFT"
             android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:id="@+id/play_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PLAY"
+            android:text="@string/PLAY"
             android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"/>
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
         <Button
             android:id="@+id/exit_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="EXIT"
+            android:text="@string/EXIT"
             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
     </RelativeLayout>
 </LinearLayout>
