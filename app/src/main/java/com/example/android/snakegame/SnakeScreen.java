@@ -20,13 +20,16 @@ public class SnakeScreen extends View {
     public int screenWidth;
     public int screenHeight;
 
-    public int x = 0;
-    public int y = 0;
+    public int x = 50;
+    public int y = 50;
 
     private Rect bgRect;
     private Paint bgPaint;
     private Rect rect;
     private Paint paint;
+
+    private Rect tRect;
+    private Paint tPaint;
 
     private RelativeLayout mSnakeScreenBg;
 
@@ -59,20 +62,20 @@ public class SnakeScreen extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
-        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
-        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50);
+        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50) - 50;
+        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50) - 50;
 
         System.out.println("system size: " + getScreenWidth() + " x " + getScreenHeight());
         System.out.println("snake size: " + snakeScreenWidth + " x " + snakeScreenHeight);
 
         bgRect = new Rect();
-        bgRect.set(0, 0, snakeScreenWidth, snakeScreenHeight);
+        bgRect.set(80, 30, snakeScreenWidth, snakeScreenHeight);
 
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setColor(Color.CYAN);
 
         rect = new Rect();
-        rect.set(x, y, 0 + 50, 0 + 50);
+        rect.set(x, y, x + 50, y + 50);
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.YELLOW);
