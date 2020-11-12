@@ -79,6 +79,12 @@ public class SnakeScreen extends View {
 
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.YELLOW);
+
+        tRect = new Rect();
+        tRect.set(50, 900, 50 + 50, 900 + 50);
+
+        tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        tPaint.setColor(Color.RED);
     }
 
     public void moveSnake() {
@@ -91,6 +97,7 @@ public class SnakeScreen extends View {
         super.onDraw(canvas);
         canvas.drawRect(bgRect, bgPaint);
         canvas.drawRect(rect, paint);
+        canvas.drawRect(tRect, tPaint);
     }
 
     public static int getScreenWidth() {
