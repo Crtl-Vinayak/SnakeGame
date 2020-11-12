@@ -17,10 +17,7 @@ import androidx.annotation.RequiresApi;
 
 public class SnakeScreen extends View {
 
-    public int screenWidth;
-    public int screenHeight;
-
-    public int x = 50;
+    public int x = 80;
     public int y = 50;
 
     private Rect bgRect;
@@ -62,18 +59,20 @@ public class SnakeScreen extends View {
     }
 
     private void init(@Nullable AttributeSet set) {
-        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50) - 50;
-        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50) - 50;
+        int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
+        int snakeScreenHeight = getScreenHeight() / 2 - ((getScreenHeight() / 2) % 50);
 
         System.out.println("system size: " + getScreenWidth() + " x " + getScreenHeight());
         System.out.println("snake size: " + snakeScreenWidth + " x " + snakeScreenHeight);
 
         bgRect = new Rect();
-        bgRect.set(80, 30, snakeScreenWidth, snakeScreenHeight);
+        bgRect.set(getScreenWidth() % 50, (getScreenHeight() / 2) % 50, snakeScreenWidth, snakeScreenHeight);
 
         bgPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         bgPaint.setColor(Color.CYAN);
 
+        x = getScreenWidth() % 50;
+        y = (getScreenHeight() / 2) % 50;
         rect = new Rect();
         rect.set(x, y, x + 50, y + 50);
 
@@ -81,7 +80,7 @@ public class SnakeScreen extends View {
         paint.setColor(Color.YELLOW);
 
         tRect = new Rect();
-        tRect.set(50, 900, 50 + 50, 900 + 50);
+        tRect.set(50, 300, 50 + 50, 300 + 50);
 
         tPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         tPaint.setColor(Color.RED);
@@ -98,6 +97,7 @@ public class SnakeScreen extends View {
         canvas.drawRect(bgRect, bgPaint);
         canvas.drawRect(rect, paint);
         canvas.drawRect(tRect, tPaint);
+        System.out.println("canvas size: " + canvas.getWidth() + " x " + canvas.getHeight());
     }
 
     public static int getScreenWidth() {
