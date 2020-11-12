@@ -1,6 +1,5 @@
 package com.example.android.snakegame;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -10,7 +9,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -27,8 +25,6 @@ public class SnakeScreen extends View {
 
     private Rect tRect;
     private Paint tPaint;
-
-    private RelativeLayout mSnakeScreenBg;
 
 //    private ArrayList<Rect> snake = new ArrayList<>();
 //    private int bodyLength = 1;
@@ -57,6 +53,12 @@ public class SnakeScreen extends View {
 
         init(attrs);
     }
+
+    /**
+     * TODO
+     * make a square by square next to each other a border.
+     * with a different color and the square sides is the same as the snake head sides. #50x50px.
+     */
 
     private void init(@Nullable AttributeSet set) {
         int snakeScreenWidth = getScreenWidth() - (getScreenWidth() % 50);
