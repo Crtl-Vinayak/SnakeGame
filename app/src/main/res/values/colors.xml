@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#3F51B5</color>
-    <color name="controllers">#88303F9F</color>
+    <color name="background_snake_begin">#7dd6cc</color>
+    <color name="background_snake_screen">#585858</color>
+    <color name="background_snake_input">#00a8f3</color>
+    <color name="controllers">#ffca18</color>
     <color name="food">#FF4081</color>
     <color name="snake">@android:color/white</color>
     <color name="text">@android:color/white</color>

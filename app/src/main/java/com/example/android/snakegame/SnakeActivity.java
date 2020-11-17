@@ -6,6 +6,10 @@ import android.view.Display;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * a lot of the code inspirations come from https://github.com/michelrbr/snake-game
+ * Especially how the Game loops works and the click events for the snake game (:
+ */
 public class SnakeActivity extends AppCompatActivity {
 
     private SnakeGame _snakeGame;
