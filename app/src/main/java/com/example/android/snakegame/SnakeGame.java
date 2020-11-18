@@ -14,13 +14,18 @@ public class SnakeGame extends View implements Runnable {
     private static final String TAG = "SnakeGame";
 
     private final long MILLIS_PER_SECOND = 1000;
-    private final short NUM_BLOCKS_WIDE = 30;
+    private final short NUM_BLOCKS_WIDE = 28;
     private final short FPS = 2;
 
     private Thread _thread = null;
     private volatile boolean _isRunning;
     private volatile boolean _isPlaying;
     private long _nextFrameTime;
+
+    private String _currentScoreMsg;
+    private String _lastScoreMsg;
+    private String _startPromptMsg;
+    private String _congratulationsMsg;
 
     private int _backgroundBeginColor;
     private int _backgroundScreenColor;
@@ -30,9 +35,28 @@ public class SnakeGame extends View implements Runnable {
     private int _snakeColor;
     private int _textColor;
 
+    private int _screenWidth;
+    private int _screenHeight;
+    private int _snakeBlockSize;
+    private int _snakeBlocksHigh;
+
     public SnakeGame(Context context, Point size) {
         super(context);
-        _nextFrameTime = System.currentTimeMillis();
+
+        _screenWidth = size.x;
+        _screenHeight = size.y;
+
+//        _snakeBlockSize = size.y /
+        // TODO add/init grid for snake game, add snake block size.
+        // TODO add background color for input and screen.
+        // TODO add death screen.
+        // TODO add score and highscore.
+        // TODO save highscore.
+
+        _currentScoreMsg = getContext().getString(R.string.current_score);
+        _lastScoreMsg = getContext().getString(R.string.last_score);
+        _startPromptMsg = getContext().getString(R.string.start_game_prompt);
+        _congratulationsMsg = getContext().getString(R.string.congratulations);
 
         _backgroundBeginColor = getContext().getResources().getColor(R.color.background_snake_begin);
         _backgroundScreenColor = getContext().getResources().getColor(R.color.background_snake_screen);
@@ -42,7 +66,7 @@ public class SnakeGame extends View implements Runnable {
         _snakeColor = getContext().getResources().getColor(R.color.snake);
         _textColor = getContext().getResources().getColor(R.color.text);
 
-//        Log.v(TAG, "size x and y = " + size.x + " x " + size.y);
+        _nextFrameTime = System.currentTimeMillis();
     }
 
     @Override

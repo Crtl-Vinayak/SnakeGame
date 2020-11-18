@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">SnakeGame</string>
-    <string name="UP">UP</string>
-    <string name="RIGHT">RIGHT</string>
-    <string name="DOWN">DOWN</string>
-    <string name="LEFT">LEFT</string>
-    <string name="PLAY">PLAY</string>
-    <string name="EXIT">EXIT</string>
+    <string name="current_score">Score: %s</string>
+    <string name="last_score">Last score: %s</string>
+    <string name="start_game_prompt">Touch the screen to start game</string>
+    <string name="congratulations">Congratulations, you finished the game</string>
 </resources>
