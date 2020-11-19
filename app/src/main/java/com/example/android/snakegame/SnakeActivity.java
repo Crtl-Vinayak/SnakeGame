@@ -8,7 +8,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * a lot of the code inspirations come from https://github.com/michelrbr/snake-game
- * Especially how the Game loops works and the click events for the snake game (:
+ * Especially how the Game loops works, how the snake body works
+ * and the click events for this snake game (:
  */
 public class SnakeActivity extends AppCompatActivity {
 

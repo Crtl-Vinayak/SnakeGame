@@ -11,13 +11,17 @@ import android.view.View;
 
 import com.example.android.snakegame.Snake.Direction;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
+
 public class SnakeGame extends View implements Runnable {
 
     private static final String TAG = "SnakeGame";
 
     private final long MILLIS_PER_SECOND = 1000;
     private final short NUM_BLOCKS_WIDE = 20;
-    private final short FPS = 2;
+    private final short FPS = 7;
 
     private Thread _thread = null;
     private volatile boolean _isRunning;
@@ -59,8 +63,11 @@ public class SnakeGame extends View implements Runnable {
     private Paint _snakePaint;
     private Direction _snakeDirection;
 
-//    private Rect _foodRect;
-//    private Paint _foodPaint;
+    private Rect _foodRect;
+    private Paint _foodPaint;
+
+    private int _score;
+    private int _highScore;
 
     public SnakeGame(Context context, Point size) {
         super(context);
@@ -142,9 +149,10 @@ public class SnakeGame extends View implements Runnable {
         _snakePaint.setColor(_snakeColor);
         _snakeDirection = Direction.RIGHT;
 
-//        _foodRect = new Rect();
-//        _foodPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-//        _foodPaint.setColor(_foodColor);
+        // Food Color and Rectangle.
+        _foodRect = new Rect();
+        _foodPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _foodPaint.setColor(_foodColor);
 
         _nextFrameTime = System.currentTimeMillis();
     }
@@ -154,17 +162,21 @@ public class SnakeGame extends View implements Runnable {
         super.onDraw(canvas);
         canvas.drawColor(_backgroundBeginColor);
         if (_isPlaying) {
+
+            // draw background.
             canvas.drawRect(_backgroundScreenRect, _backgroundScreenPaint);
             canvas.drawRect(_backgroundInputRect, _backgroundInputPaint);
+
+            // draw buttons.
             canvas.drawRect(_upBtn, _btnPaint);
             canvas.drawRect(_rightBtn, _btnPaint);
             canvas.drawRect(_downBtn, _btnPaint);
             canvas.drawRect(_leftBtn, _btnPaint);
 
-//            for (int i = 0; i < _snake.size(); i++) {
-//                canvas.drawRect(_snake.get(i), _snakePaint);
-//            }
+            // draw food.
+            canvas.drawRect(_foodRect, _foodPaint);
 
+            // draw snake.
             for (int i = 0; i < _snake.getSnakeLength() + 1; i++) {
                 canvas.drawRect(
                         _snake.bodyXs[i] * _snakeBlockSize,
@@ -225,21 +237,61 @@ public class SnakeGame extends View implements Runnable {
     }
 
     public void update() {
+        if ((_snake.getHeadX() * _snakeBlockSize) == _foodRect.left &&
+            _snake.getHeadY() * _snakeBlockSize == _foodRect.top) {
+            eatFood();
+        }
+
         _snake.moveSnake();
     }
 
     public void startGame() {
         _nextFrameTime = System.currentTimeMillis();
         _snake = new Snake(0, 0, _snakeDirection, _maxBlocksOnScreen);
+        spawnFood();
+        _score = 0;
         _isPlaying = true;
     }
 
+    /**
+     * this method is not really made 100% by me (aka Vinayak), but
+     * by https://github.com/michelrbr/snake-game
+     * without this repository, it would take me a month or more to make this method.
+     */
     public void spawnFood() {
+        Random random = new Random();
+        int rx;
+        int ry;
 
+        List xs = Arrays.asList(_snake.bodyYs);
+        List ys = Arrays.asList(_snake.bodyYs);
+
+        do {
+            rx = random.nextInt(_snakeWidthBlockFits - 1) + 1;
+            ry = random.nextInt(NUM_BLOCKS_WIDE - 1) + 1;
+        } while (xs.contains(rx) && ys.contains(ry));
+
+        int x = rx * _snakeBlockSize;
+        int y = ry * _snakeBlockSize;
+
+        _foodRect.set(
+                x,
+                y,
+                x + _snakeBlockSize,
+                y + _snakeBlockSize
+        );
     }
 
     public void eatFood() {
 
+        _score++;
+
+        if (_score < (_maxBlocksOnScreen - 1)) {
+            spawnFood();
+            _snake.increaseSize();
+        } else {
+            _isPlaying = false;
+        }
     }
 
     @Override
