@@ -56,6 +56,7 @@ public class SnakeGame extends View implements Runnable {
 
     private ArrayList<Rect> _snake = new ArrayList<>();
     private Paint _snakePaint;
+    private Directions _snakeDirection;
     private int _posX;
     private int _posY;
 
@@ -126,6 +127,7 @@ public class SnakeGame extends View implements Runnable {
         _snake.add(new Rect(_posX, _posY, _snakeBlockSize, _snakeBlockSize));
         _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _snakePaint.setColor(_snakeColor);
+        _snakeDirection = Directions.RIGHT;
 
         _nextFrameTime = System.currentTimeMillis();
     }
@@ -209,9 +211,42 @@ public class SnakeGame extends View implements Runnable {
                 int posY = Math.round(motionEvent.getY());
                 Log.v(TAG, "click position: x = " + posX + " /// click position y = " + posY);
 
-                //TODO add controllers for the 4 directions.
-
-
+                // Up Button.
+                if (posX >= _screenWidth / 2 - (_screenHeight / 10 / 2) &&
+                    posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
+                    posY >= _snakeHeightScreen &&
+                    posY <= _snakeHeightScreen + (_screenHeight / 10) &&
+                    _snakeDirection != Directions.DOWN) {
+                    _snakeDirection = Directions.UP;
+                    Log.v(TAG, "snake direction = " + _snakeDirection);
+                }
+                // Right Button.
+                if (posX >= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
+                    posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) + (_screenHeight / 10) &&
+                    posY >= _snakeHeightScreen + (_screenHeight / 10) &&
+                    posY <= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
+                    _snakeDirection != Directions.LEFT) {
+                    _snakeDirection = Directions.RIGHT;
+                    Log.v(TAG, "snake direction = " + _snakeDirection);
+                }
+                // Down Button.
+                if (posX >= _screenWidth / 2 - (_screenHeight / 10 / 2) &&
+                    posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
+                    posY >= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
+                    posY <= _snakeHeightScreen + (_screenHeight / 10 * 3) &&
+                    _snakeDirection != Directions.UP) {
+                    _snakeDirection = Directions.DOWN;
+                    Log.v(TAG, "snake direction = " + _snakeDirection);
+                }
+                // Left Button.
+                if (posX >= _screenWidth / 2 - (_screenHeight / 10 / 2) - (_screenHeight / 10) &&
+                    posX <= _screenWidth / 2 - (_screenHeight / 10 / 2) &&
+                    posY >= _snakeHeightScreen + (_screenHeight / 10) &&
+                    posY <= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
+                    _snakeDirection != Directions.RIGHT) {
+                    _snakeDirection = Directions.LEFT;
+                    Log.v(TAG, "snake direction = " + _snakeDirection);
+                }
             } else {
                 startGame();
             }
