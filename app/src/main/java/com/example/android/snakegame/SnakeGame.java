@@ -57,11 +57,13 @@ public class SnakeGame extends View implements Runnable {
     private Rect _leftBtn;
     private Paint _btnPaint;
 
-    private List<Rect> _snake = new LinkedList<>();
+//    private List<Rect> _snake = new LinkedList<>();
+//    private List<Integer> _snakeXs = new LinkedList<>();
+//    private List<Integer> _snakeYs = new LinkedList<>();
+
+    private Snake _snake;
     private Paint _snakePaint;
     private Directions _snakeDirection;
-    private int _posX;
-    private int _posY;
 
     private Rect _foodRect;
     private Paint _foodPaint;
@@ -133,9 +135,9 @@ public class SnakeGame extends View implements Runnable {
         _btnPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _btnPaint.setColor(_controllersColor);
 
-        _posX = 0;
-        _posY = 0;
-        _snake.add(new Rect(_posX, _posY, _snakeBlockSize, _snakeBlockSize));
+//        _snakeXs.add(0);
+//        _snakeYs.add(0);
+//        _snake.add(new Rect(_snakeXs.get(0), _snakeYs.get(0), _snakeBlockSize, _snakeBlockSize));
         _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _snakePaint.setColor(_snakeColor);
         _snakeDirection = Directions.RIGHT;
@@ -158,7 +160,10 @@ public class SnakeGame extends View implements Runnable {
             canvas.drawRect(_rightBtn, _btnPaint);
             canvas.drawRect(_downBtn, _btnPaint);
             canvas.drawRect(_leftBtn, _btnPaint);
-            canvas.drawRect(_snake.get(0), _snakePaint);
+
+//            for (int i = 0; i < _snake.size(); i++) {
+//                canvas.drawRect(_snake.get(i), _snakePaint);
+//            }
         }
     }
 
@@ -211,29 +216,20 @@ public class SnakeGame extends View implements Runnable {
     }
 
     public void update() {
-        moveSnake();
+        _snake.moveSnake();
     }
 
     public void startGame() {
         _nextFrameTime = System.currentTimeMillis();
+        _snake = new Snake();
         _isPlaying = true;
     }
 
-    public void moveSnake() {
+    public void spawnFood() {
 
-        if (_snakeDirection == Directions.UP) {
-            _posY -= _snakeBlockSize;
-        } else if (_snakeDirection == Directions.RIGHT) {
-            _posX += _snakeBlockSize;
-        } else if (_snakeDirection == Directions.DOWN) {
-            _posY += _snakeBlockSize;
-        } else {
-            _posX -= _snakeBlockSize;
-        }
-        _snake.get(0).set(_posX, _posY, _posX + _snakeBlockSize, _posY + _snakeBlockSize);
     }
 
-    public void spawnFood() {
+    public void eatFood() {
 
     }
 
