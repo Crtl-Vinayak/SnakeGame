@@ -66,6 +66,7 @@ public class SnakeGame extends View implements Runnable {
     private Rect _foodRect;
     private Paint _foodPaint;
 
+    private Paint textPaint;
     private int _score;
     private int _highScore;
 
@@ -89,10 +90,6 @@ public class SnakeGame extends View implements Runnable {
         Log.v(TAG, "Snake Block Size = " + _snakeBlockSize);
         Log.v(TAG, "Snake Width Block Fits = " + _snakeWidthBlockFits);
 
-        // TODO make snake big
-        // TODO death detector
-        // TODO reserve place for food to spawn
-        // TODO snake tail needs to follow snake head.
         // TODO add death screen.
         // TODO add score and highscore.
         // TODO save highscore.
@@ -153,6 +150,10 @@ public class SnakeGame extends View implements Runnable {
         _foodPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _foodPaint.setColor(_foodColor);
 
+        // Text Color...
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setColor(_textColor);
+
         _nextFrameTime = System.currentTimeMillis();
     }
 
@@ -184,6 +185,17 @@ public class SnakeGame extends View implements Runnable {
                         _snake.bodyYs[i] * _snakeBlockSize + _snakeBlockSize,
                         _snakePaint);
             }
+        } else {
+            textPaint.setTextSize(60);
+            int halfScreen = _screenWidth / 2;
+
+//            if (_score > 0) {
+//                String msgScore = String.format()
+//            }
+
+            float startMeasure = textPaint.measureText(_startPromptMsg);
+            int halfText = Math.round(startMeasure / 2);
+            canvas.drawText(_startPromptMsg, halfScreen - halfText,_screenHeight / 2, textPaint);
         }
     }
 
