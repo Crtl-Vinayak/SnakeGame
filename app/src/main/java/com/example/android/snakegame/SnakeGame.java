@@ -48,6 +48,12 @@ public class SnakeGame extends View implements Runnable {
     private int _snakeBlockSize;
     private int _snakeWidthBlockFits;
 
+    private Rect _upBtn;
+    private Rect _rightBtn;
+    private Rect _downBtn;
+    private Rect _leftBtn;
+    private Paint _btnPaint;
+
     private ArrayList<Rect> _snake = new ArrayList<>();
     private Paint _snakePaint;
     private int _posX;
@@ -92,6 +98,29 @@ public class SnakeGame extends View implements Runnable {
         _backgroundScreenPaint.setColor(_backgroundScreenColor);
         _backgroundInputPaint.setColor(_backgroundInputColor);
 
+        _upBtn = new Rect(
+                _screenWidth / 2 - (_screenHeight / 10 / 2),
+                _snakeHeightScreen,
+                _screenWidth / 2 + (_screenHeight / 10 / 2),
+                _snakeHeightScreen + (_screenHeight / 10));
+        _rightBtn = new Rect(
+                _screenWidth / 2 + (_screenHeight / 10 / 2),
+                _snakeHeightScreen + (_screenHeight / 10),
+                _screenWidth / 2 + (_screenHeight / 10 / 2) + (_screenHeight / 10),
+                _snakeHeightScreen + (_screenHeight / 10 * 2));
+        _downBtn = new Rect(
+                _screenWidth / 2 - (_screenHeight / 10 / 2),
+                _snakeHeightScreen + (_screenHeight / 10 * 2),
+                _screenWidth / 2 + (_screenHeight / 10 / 2),
+                _snakeHeightScreen + (_screenHeight / 10 * 3));
+        _leftBtn = new Rect(
+                _screenWidth / 2 - (_screenHeight / 10 / 2) - (_screenHeight / 10),
+                _snakeHeightScreen + (_screenHeight / 10),
+                _screenWidth / 2 - (_screenHeight / 10 / 2),
+                _snakeHeightScreen + (_screenHeight / 10 * 2));
+        _btnPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _btnPaint.setColor(_controllersColor);
+
         _posX = 0;
         _posY = 0;
         _snake.add(new Rect(_posX, _posY, _snakeBlockSize, _snakeBlockSize));
@@ -108,6 +137,10 @@ public class SnakeGame extends View implements Runnable {
         if (_isPlaying) {
             canvas.drawRect(_backgroundScreenRect, _backgroundScreenPaint);
             canvas.drawRect(_backgroundInputRect, _backgroundInputPaint);
+            canvas.drawRect(_upBtn, _btnPaint);
+            canvas.drawRect(_rightBtn, _btnPaint);
+            canvas.drawRect(_downBtn, _btnPaint);
+            canvas.drawRect(_leftBtn, _btnPaint);
             canvas.drawRect(_snake.get(0), _snakePaint);
         }
     }
@@ -160,6 +193,13 @@ public class SnakeGame extends View implements Runnable {
         _isPlaying = true;
     }
 
+    public enum Directions {
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
         if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -170,6 +210,7 @@ public class SnakeGame extends View implements Runnable {
                 Log.v(TAG, "click position: x = " + posX + " /// click position y = " + posY);
 
                 //TODO add controllers for the 4 directions.
+
 
             } else {
                 startGame();
