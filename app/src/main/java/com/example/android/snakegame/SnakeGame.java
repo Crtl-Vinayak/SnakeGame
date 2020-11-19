@@ -174,6 +174,19 @@ public class SnakeGame extends View implements Runnable {
         _thread.start();
     }
 
+    /**
+     * Note: in this explanation, I say current time instead of System.currentTimeMillis().
+     *
+     * This method is for the game loop.
+     * This method is being used in the run method from Runnable.
+     * If the current time is bigger than the value of _nextFrameTime.
+     * Then _nextFrameTime will have a bigger value, how this happens is by
+     * adding the current time plus next frame time, in other words:
+     *
+     * _nextFrameTime = current time + 1000 / FPS.
+     *
+     * @return most of the time false, because _nextFrameTime is usually bigger than current time.
+     */
     public boolean updateRequired() {
         if (_nextFrameTime <= System.currentTimeMillis()) {
             _nextFrameTime = System.currentTimeMillis() + MILLIS_PER_SECOND / FPS;
@@ -183,16 +196,31 @@ public class SnakeGame extends View implements Runnable {
     }
 
     public void update() {
-        _posX += _snakeBlockSize;
-        if (_posX >= _screenWidth) {
-            _posX -= _snakeBlockSize;
-        }
-        _snake.get(0).set(_posX, _posY, _posX + _snakeBlockSize, _posY + _snakeBlockSize);
+        moveSnake();
     }
 
     public void startGame() {
         _nextFrameTime = System.currentTimeMillis();
         _isPlaying = true;
+    }
+
+    public void moveSnake() {
+
+        if (_snakeDirection == Directions.UP) {
+            _posY -= _snakeBlockSize;
+        } else if (_snakeDirection == Directions.RIGHT) {
+            _posX += _snakeBlockSize;
+        } else if (_snakeDirection == Directions.DOWN) {
+            _posY += _snakeBlockSize;
+        } else {
+            _posX -= _snakeBlockSize;
+        }
+
+//        _posX += _snakeBlockSize;
+//        if (_posX >= _screenWidth) {
+//            _posX -= _snakeBlockSize;
+//        }
+        _snake.get(0).set(_posX, _posY, _posX + _snakeBlockSize, _posY + _snakeBlockSize);
     }
 
     public enum Directions {
