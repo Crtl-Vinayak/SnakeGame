@@ -189,10 +189,16 @@ public class SnakeGame extends View implements Runnable {
             textPaint.setTextSize(60);
             int halfScreen = _screenWidth / 2;
 
+            // TODO add score below the instructions
 //            if (_score > 0) {
 //                String msgScore = String.format()
 //            }
 
+            // TODO add highscore message above last score...
+
+            // TODO add congratulation message above the instructions.
+
+            // Here is instruction message at the begin screen of the snake game.
             float startMeasure = textPaint.measureText(_startPromptMsg);
             int halfText = Math.round(startMeasure / 2);
             canvas.drawText(_startPromptMsg, halfScreen - halfText,_screenHeight / 2, textPaint);
