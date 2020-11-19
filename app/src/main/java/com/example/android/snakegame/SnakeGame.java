@@ -147,7 +147,6 @@ public class SnakeGame extends View implements Runnable {
         // Snake Color and Default Direction.
         _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _snakePaint.setColor(_snakeColor);
-        _snakeDirection = Direction.RIGHT;
 
         // Food Color and Rectangle.
         _foodRect = new Rect();
@@ -243,10 +242,15 @@ public class SnakeGame extends View implements Runnable {
         }
 
         _snake.moveSnake();
+
+        if (detectDeath()) {
+            _isPlaying = false;
+        }
     }
 
     public void startGame() {
         _nextFrameTime = System.currentTimeMillis();
+        _snakeDirection = Direction.RIGHT;
         _snake = new Snake(0, 0, _snakeDirection, _maxBlocksOnScreen);
         spawnFood();
         _score = 0;
@@ -292,6 +296,28 @@ public class SnakeGame extends View implements Runnable {
         } else {
             _isPlaying = false;
         }
+    }
+
+    private boolean detectDeath() {
+
+        boolean dead = false;
+
+        // Hit the screen edge.
+        if (_snake.getHeadX() == -1) dead = true;
+        if (_snake.getHeadY() == -1) dead = true;
+        if (_snake.getHeadX() >= _snakeWidthBlockFits) dead = true;
+        if (_snake.getHeadY() >= NUM_BLOCKS_WIDE) dead = true;
+
+        // Hit itself
+        for (int i = _snake.getSnakeLength() + 1; i > 0; i--) {
+            if ((i > 4)
+                && (_snake.getHeadX() == _snake.bodyXs[i])
+                && (_snake.getHeadY() == _snake.bodyYs[i])) {
+                dead = true;
+            }
+        }
+
+        return dead;
     }
 
     @Override
