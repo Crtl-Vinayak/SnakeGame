@@ -9,6 +9,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.android.snakegame.Snake.Direction;
+
 public class SnakeGame extends View implements Runnable {
 
     private static final String TAG = "SnakeGame";
@@ -55,7 +57,7 @@ public class SnakeGame extends View implements Runnable {
 
     private Snake _snake;
     private Paint _snakePaint;
-    private Directions _snakeDirection;
+    private Direction _snakeDirection;
 
 //    private Rect _foodRect;
 //    private Paint _foodPaint;
@@ -138,7 +140,7 @@ public class SnakeGame extends View implements Runnable {
         // Snake Color and Default Direction.
         _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _snakePaint.setColor(_snakeColor);
-        _snakeDirection = Directions.RIGHT;
+        _snakeDirection = Direction.RIGHT;
 
 //        _foodRect = new Rect();
 //        _foodPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -162,6 +164,15 @@ public class SnakeGame extends View implements Runnable {
 //            for (int i = 0; i < _snake.size(); i++) {
 //                canvas.drawRect(_snake.get(i), _snakePaint);
 //            }
+
+            for (int i = 0; i < _snake.getSnakeLength() + 1; i++) {
+                canvas.drawRect(
+                        _snake.bodyXs[i] * _snakeBlockSize,
+                        _snake.bodyYs[i] * _snakeBlockSize,
+                        _snake.bodyXs[i] * _snakeBlockSize + _snakeBlockSize,
+                        _snake.bodyYs[i] * _snakeBlockSize + _snakeBlockSize,
+                        _snakePaint);
+            }
         }
     }
 
@@ -219,7 +230,7 @@ public class SnakeGame extends View implements Runnable {
 
     public void startGame() {
         _nextFrameTime = System.currentTimeMillis();
-        _snake = new Snake();
+        _snake = new Snake(0, 0, _snakeDirection, _maxBlocksOnScreen);
         _isPlaying = true;
     }
 
@@ -229,13 +240,6 @@ public class SnakeGame extends View implements Runnable {
 
     public void eatFood() {
 
-    }
-
-    public enum Directions {
-        UP,
-        RIGHT,
-        DOWN,
-        LEFT
     }
 
     @Override
@@ -252,33 +256,37 @@ public class SnakeGame extends View implements Runnable {
                     posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
                     posY >= _snakeHeightScreen &&
                     posY <= _snakeHeightScreen + (_screenHeight / 10) &&
-                    _snakeDirection != Directions.DOWN) {
-                    _snakeDirection = Directions.UP;
+                    _snakeDirection != Direction.DOWN) {
+                    _snakeDirection = Direction.UP;
                 }
                 // Right Button.
                 if (posX >= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
                     posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) + (_screenHeight / 10) &&
                     posY >= _snakeHeightScreen + (_screenHeight / 10) &&
                     posY <= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
-                    _snakeDirection != Directions.LEFT) {
-                    _snakeDirection = Directions.RIGHT;
+                    _snakeDirection != Direction.LEFT) {
+                    _snakeDirection = Direction.RIGHT;
                 }
                 // Down Button.
                 if (posX >= _screenWidth / 2 - (_screenHeight / 10 / 2) &&
                     posX <= _screenWidth / 2 + (_screenHeight / 10 / 2) &&
                     posY >= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
                     posY <= _snakeHeightScreen + (_screenHeight / 10 * 3) &&
-                    _snakeDirection != Directions.UP) {
-                    _snakeDirection = Directions.DOWN;
+                    _snakeDirection != Direction.UP) {
+                    _snakeDirection = Direction.DOWN;
                 }
                 // Left Button.
                 if (posX >= _screenWidth / 2 - (_screenHeight / 10 / 2) - (_screenHeight / 10) &&
                     posX <= _screenWidth / 2 - (_screenHeight / 10 / 2) &&
                     posY >= _snakeHeightScreen + (_screenHeight / 10) &&
                     posY <= _snakeHeightScreen + (_screenHeight / 10 * 2) &&
-                    _snakeDirection != Directions.RIGHT) {
-                    _snakeDirection = Directions.LEFT;
+                    _snakeDirection != Direction.RIGHT) {
+                    _snakeDirection = Direction.LEFT;
                 }
+
+                // pass the direction value to Snake class.
+                _snake.setCurrentDirection(_snakeDirection);
+
             } else {
                 startGame();
             }
