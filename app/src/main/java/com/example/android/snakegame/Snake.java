@@ -2,6 +2,10 @@ package com.example.android.snakegame;
 
 public class Snake {
 
+    public int[] bodyXs;
+    public int[] bodyYs;
+    private int _snakeLength;
+
     public void moveSnake() {
 
 
@@ -37,10 +41,10 @@ public class Snake {
     }
 
     public int getHeadX() {
-        return 0;
+        return bodyXs[0];
     }
 
     public int getHeadY() {
-        return 0;
+        return bodyYs[0];
     }
 }
