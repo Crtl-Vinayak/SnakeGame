@@ -9,12 +9,14 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.ArrayList;
+
 public class SnakeGame extends View implements Runnable {
 
     private static final String TAG = "SnakeGame";
 
     private final long MILLIS_PER_SECOND = 1000;
-    private final short NUM_BLOCKS_WIDE = 28;
+    private final short NUM_BLOCKS_WIDE = 20;
     private final short FPS = 2;
 
     private Thread _thread = null;
@@ -35,10 +37,21 @@ public class SnakeGame extends View implements Runnable {
     private int _snakeColor;
     private int _textColor;
 
+    private Rect _backgroundScreenRect;
+    private Rect _backgroundInputRect;
+    private Paint _backgroundScreenPaint;
+    private Paint _backgroundInputPaint;
+
     private int _screenWidth;
     private int _screenHeight;
+    private int _snakeHeightScreen;
     private int _snakeBlockSize;
-    private int _snakeBlocksHigh;
+    private int _snakeWidthBlockFits;
+
+    private ArrayList<Rect> _snake = new ArrayList<>();
+    private Paint _snakePaint;
+    private int _posX;
+    private int _posY;
 
     public SnakeGame(Context context, Point size) {
         super(context);
@@ -46,9 +59,15 @@ public class SnakeGame extends View implements Runnable {
         _screenWidth = size.x;
         _screenHeight = size.y;
 
-//        _snakeBlockSize = size.y /
+        _snakeHeightScreen = _screenHeight / 10 * 7;
+        _snakeBlockSize = _snakeHeightScreen / NUM_BLOCKS_WIDE;
+        _snakeWidthBlockFits = _screenWidth / _snakeBlockSize;
+
+        Log.v(TAG, "Snake Height Screen = " + _snakeHeightScreen);
+        Log.v(TAG, "Snake Block Size = " + _snakeBlockSize);
+        Log.v(TAG, "Snake Width Block Fits = " + _snakeWidthBlockFits);
+
         // TODO add/init grid for snake game, add snake block size.
-        // TODO add background color for input and screen.
         // TODO add death screen.
         // TODO add score and highscore.
         // TODO save highscore.
@@ -66,6 +85,19 @@ public class SnakeGame extends View implements Runnable {
         _snakeColor = getContext().getResources().getColor(R.color.snake);
         _textColor = getContext().getResources().getColor(R.color.text);
 
+        _backgroundScreenRect = new Rect(0, 0, _screenWidth, _snakeHeightScreen);
+        _backgroundInputRect = new Rect(0, _snakeHeightScreen, _screenWidth, _screenHeight);
+        _backgroundScreenPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _backgroundInputPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _backgroundScreenPaint.setColor(_backgroundScreenColor);
+        _backgroundInputPaint.setColor(_backgroundInputColor);
+
+        _posX = 0;
+        _posY = 0;
+        _snake.add(new Rect(_posX, _posY, _snakeBlockSize, _snakeBlockSize));
+        _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        _snakePaint.setColor(_snakeColor);
+
         _nextFrameTime = System.currentTimeMillis();
     }
 
@@ -73,6 +105,11 @@ public class SnakeGame extends View implements Runnable {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.drawColor(_backgroundBeginColor);
+        if (_isPlaying) {
+            canvas.drawRect(_backgroundScreenRect, _backgroundScreenPaint);
+            canvas.drawRect(_backgroundInputRect, _backgroundInputPaint);
+            canvas.drawRect(_snake.get(0), _snakePaint);
+        }
     }
 
     @Override
@@ -82,7 +119,6 @@ public class SnakeGame extends View implements Runnable {
                 if (_isPlaying) {
                     update();
                 }
-//                Log.v(TAG, "Thread is RUNNING!!!");
                 postInvalidate();
             }
         }
@@ -112,7 +148,11 @@ public class SnakeGame extends View implements Runnable {
     }
 
     public void update() {
-
+        _posX += _snakeBlockSize;
+        if (_posX >= _screenWidth) {
+            _posX -= _snakeBlockSize;
+        }
+        _snake.get(0).set(_posX, _posY, _posX + _snakeBlockSize, _posY + _snakeBlockSize);
     }
 
     public void startGame() {
@@ -130,6 +170,7 @@ public class SnakeGame extends View implements Runnable {
                 Log.v(TAG, "click position: x = " + posX + " /// click position y = " + posY);
 
                 //TODO add controllers for the 4 directions.
+
             } else {
                 startGame();
             }
