@@ -10,6 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class SnakeGame extends View implements Runnable {
 
@@ -47,6 +49,7 @@ public class SnakeGame extends View implements Runnable {
     private int _snakeHeightScreen;
     private int _snakeBlockSize;
     private int _snakeWidthBlockFits;
+    private int _maxBlocksOnScreen;
 
     private Rect _upBtn;
     private Rect _rightBtn;
@@ -54,11 +57,14 @@ public class SnakeGame extends View implements Runnable {
     private Rect _leftBtn;
     private Paint _btnPaint;
 
-    private ArrayList<Rect> _snake = new ArrayList<>();
+    private List<Rect> _snake = new LinkedList<>();
     private Paint _snakePaint;
     private Directions _snakeDirection;
     private int _posX;
     private int _posY;
+
+    private Rect _foodRect;
+    private Paint _foodPaint;
 
     public SnakeGame(Context context, Point size) {
         super(context);
@@ -69,12 +75,17 @@ public class SnakeGame extends View implements Runnable {
         _snakeHeightScreen = _screenHeight / 10 * 7;
         _snakeBlockSize = _snakeHeightScreen / NUM_BLOCKS_WIDE;
         _snakeWidthBlockFits = _screenWidth / _snakeBlockSize;
+        _maxBlocksOnScreen = NUM_BLOCKS_WIDE * _snakeWidthBlockFits;
 
         Log.v(TAG, "Snake Height Screen = " + _snakeHeightScreen);
         Log.v(TAG, "Snake Block Size = " + _snakeBlockSize);
         Log.v(TAG, "Snake Width Block Fits = " + _snakeWidthBlockFits);
 
-        // TODO add/init grid for snake game, add snake block size.
+        // TODO make snake big
+        // TODO death detecter
+        // TODO reserve place for food to spawn
+        // TODO snake tail needs to follow snake head.
+
         // TODO add death screen.
         // TODO add score and highscore.
         // TODO save highscore.
@@ -128,6 +139,10 @@ public class SnakeGame extends View implements Runnable {
         _snakePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         _snakePaint.setColor(_snakeColor);
         _snakeDirection = Directions.RIGHT;
+
+//        _foodRect = new Rect();
+//        _foodPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+//        _foodPaint.setColor(_foodColor);
 
         _nextFrameTime = System.currentTimeMillis();
     }
@@ -215,12 +230,11 @@ public class SnakeGame extends View implements Runnable {
         } else {
             _posX -= _snakeBlockSize;
         }
-
-//        _posX += _snakeBlockSize;
-//        if (_posX >= _screenWidth) {
-//            _posX -= _snakeBlockSize;
-//        }
         _snake.get(0).set(_posX, _posY, _posX + _snakeBlockSize, _posY + _snakeBlockSize);
+    }
+
+    public void spawnFood() {
+
     }
 
     public enum Directions {
