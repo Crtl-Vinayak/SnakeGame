@@ -173,6 +173,10 @@ public class SnakeGame extends View implements Runnable {
             canvas.drawRect(_downBtn, _btnPaint);
             canvas.drawRect(_leftBtn, _btnPaint);
 
+            // draw score text.
+            textPaint.setTextSize(70);
+            canvas.drawText(String.format(_currentScoreMsg, _score), 20, 60, textPaint);
+
             // draw food.
             canvas.drawRect(_foodRect, _foodPaint);
 
@@ -188,19 +192,38 @@ public class SnakeGame extends View implements Runnable {
         } else {
             textPaint.setTextSize(60);
             int halfScreen = _screenWidth / 2;
+            int halfText;
 
-            // TODO add score below the instructions
-//            if (_score > 0) {
-//                String msgScore = String.format()
-//            }
+            // last score message.
+            if (_score > 0) {
+                String msgScore = String.format(_lastScoreMsg, _score);
+                float scoreMeasure = textPaint.measureText(msgScore);
+                halfText = Math.round(scoreMeasure / 2);
+                canvas.drawText(
+                        msgScore,
+                        halfScreen - halfText,
+                        (_screenHeight / 2) + 100,
+                        textPaint);
+            }
 
-            // TODO add highscore message above last score...
+            // high score message.
+            // TODO add highscore message below last score...
 
-            // TODO add congratulation message above the instructions.
+            // congratulation message.
+            if (_score >= (_maxBlocksOnScreen - 1)) {
+                float congratsMeasure = textPaint.measureText(_congratulationsMsg);
+                halfText = Math.round(congratsMeasure / 2);
+                canvas.drawText(
+                        _congratulationsMsg,
+                        halfScreen - halfText,
+                        (_screenHeight / 2 + 200),
+                        textPaint
+                );
+            }
 
             // Here is instruction message at the begin screen of the snake game.
             float startMeasure = textPaint.measureText(_startPromptMsg);
-            int halfText = Math.round(startMeasure / 2);
+            halfText = Math.round(startMeasure / 2);
             canvas.drawText(_startPromptMsg, halfScreen - halfText,_screenHeight / 2, textPaint);
         }
     }
