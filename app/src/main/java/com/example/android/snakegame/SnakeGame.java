@@ -1,6 +1,7 @@
 package com.example.android.snakegame;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -8,6 +9,7 @@ import android.graphics.Rect;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.android.snakegame.Snake.Direction;
 
@@ -30,6 +32,7 @@ public class SnakeGame extends View implements Runnable {
 
     private String _currentScoreMsg;
     private String _lastScoreMsg;
+    private String _highScoreMsg;
     private String _startPromptMsg;
     private String _congratulationsMsg;
 
@@ -86,17 +89,10 @@ public class SnakeGame extends View implements Runnable {
         _snakeWidthBlockFits = _screenWidth / _snakeBlockSize;
         _maxBlocksOnScreen = NUM_BLOCKS_WIDE * _snakeWidthBlockFits;
 
-        Log.v(TAG, "Snake Height Screen = " + _snakeHeightScreen);
-        Log.v(TAG, "Snake Block Size = " + _snakeBlockSize);
-        Log.v(TAG, "Snake Width Block Fits = " + _snakeWidthBlockFits);
-
-        // TODO add death screen.
-        // TODO add score and highscore.
-        // TODO save highscore.
-
         // Texts for the snake game.
         _currentScoreMsg = getContext().getString(R.string.current_score);
         _lastScoreMsg = getContext().getString(R.string.last_score);
+        _highScoreMsg = getContext().getString(R.string.high_score);
         _startPromptMsg = getContext().getString(R.string.start_game_prompt);
         _congratulationsMsg = getContext().getString(R.string.congratulations);
 
@@ -207,7 +203,17 @@ public class SnakeGame extends View implements Runnable {
             }
 
             // high score message.
-            // TODO add highscore message below last score...
+            if (_score > 0) {
+                String msgHighScore = String.format(_highScoreMsg, _highScore);
+                float highScoreMeasure = textPaint.measureText(msgHighScore);
+                halfText = Math.round(highScoreMeasure / 2);
+                canvas.drawText(
+                        msgHighScore,
+                        halfScreen - halfText,
+                        (_screenHeight / 2) - 100,
+                        textPaint
+                );
+            }
 
             // congratulation message.
             if (_score >= (_maxBlocksOnScreen - 1)) {
@@ -282,11 +288,26 @@ public class SnakeGame extends View implements Runnable {
             eatFood();
         }
 
+        if (_score > _highScore) _highScore = _score;
+
         _snake.moveSnake();
 
         if (detectDeath()) {
+            saveData();
             _isPlaying = false;
         }
+    }
+
+    public void saveData() {
+        SharedPreferences prefs = getContext().getSharedPreferences("SharedPrefKey", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("highScoreKey", _highScore);
+        editor.apply();
+    }
+
+    public void loadData() {
+        SharedPreferences prefs = getContext().getSharedPreferences("SharedPrefKey", Context.MODE_PRIVATE);
+        _highScore = prefs.getInt("highScoreKey", 0);
     }
 
     public void startGame() {
@@ -295,6 +316,7 @@ public class SnakeGame extends View implements Runnable {
         _snake = new Snake(0, 0, _snakeDirection, _maxBlocksOnScreen);
         spawnFood();
         _score = 0;
+        loadData();
         _isPlaying = true;
     }
 
